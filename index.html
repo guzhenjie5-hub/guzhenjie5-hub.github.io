@@ -3,278 +3,477 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex | Creative Developer</title>
+    <title>田园小农夫</title>
     <style>
-        :root {
-            --bg-color: #0a0a0a;
-            --card-bg: #161616;
-            --text-main: #ffffff;
-            --text-sub: #888888;
-            --accent: #ccff00;
-            --border: rgba(255, 255, 255, 0.05);
-            --gap: 16px;
-            --radius: 24px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 2rem;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-            /* 增加透视感，让3D效果更明显 */
-            perspective: 2000px;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(to bottom, #87CEEB, #98FB98);
+            color: #333;
         }
-
-        .bento-grid {
+        
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2E8B57;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: #F0F8FF;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2E8B57;
+        }
+        
+        .farmland {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(4, minmax(100px, auto));
-            gap: var(--gap);
-            max-width: 1000px;
-            width: 100%;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            
-            /* 3D 变换的关键属性 */
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
-            will-change: transform; /* 性能优化 */
-        }
-
-        /* 卡片内容层，用于视差效果（内容浮起） */
-        .card-content {
-            padding: 24px;
-            height: 100%;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transform: translateZ(20px); /* 让内容在Z轴上凸起 */
-            z-index: 2;
-            pointer-events: none; /* 让鼠标事件穿透到card本身 */
+            gap: 10px;
+            margin: 20px 0;
         }
         
-        /* 如果卡片是链接，恢复点击 */
-        a.card .card-content { pointer-events: none; }
-        a.card { text-decoration: none; cursor: pointer; }
-
-        /* 动态光泽层 */
-        .card-glare {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(
-                circle at 50% 50%, 
-                rgba(255, 255, 255, 0.1) 0%, 
-                rgba(255, 255, 255, 0) 80%
-            );
-            opacity: 0;
-            mix-blend-mode: overlay; /* 混合模式，让光泽更自然 */
-            pointer-events: none;
-            transition: opacity 0.3s;
-            z-index: 3;
-        }
-
-        /* 各个卡片的特定布局 */
-        .card-profile { grid-column: span 2; grid-row: span 2; }
-        .card-profile .card-content { align-items: center; justify-content: center; text-align: center; }
-        
-        .card-map { grid-column: span 1; grid-row: span 1; background: linear-gradient(45deg, #222, #333); }
-        .card-social { grid-column: span 1; grid-row: span 2; background-color: var(--accent); color: #000; }
-        .card-social h2, .card-social p { color: #000; border-color: rgba(0,0,0,0.1); }
-        
-        .card-stack { grid-column: span 1; grid-row: span 2; }
-        .card-project { grid-column: span 2; grid-row: span 2; }
-        .card-status { grid-column: span 1; grid-row: span 1; }
-
-        /* 元素样式 */
-        .avatar {
-            width: 100px;
+        .plot {
             height: 100px;
-            background-color: #333;
-            border-radius: 50%;
-            margin-bottom: 1rem;
-            object-fit: cover;
-            border: 2px solid var(--accent);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3); /* 增加阴影 */
+            background: #DEB887;
+            border: 2px solid #8B4513;
+            border-radius: 8px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-
-        h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; line-height: 1.1; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
-        p { color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; }
-        .card-social p { color: rgba(0,0,0,0.7); }
-
-        .tag {
-            display: inline-block;
-            padding: 4px 12px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            margin-right: 6px;
-            margin-bottom: 6px;
+        
+        .plot:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-
-        .btn {
-            display: inline-flex;
+        
+        .plot.occupied {
+            background: #90EE90;
+        }
+        
+        .crop {
+            width: 100%;
+            height: 100%;
+            display: flex;
             align-items: center;
-            margin-top: auto;
-            color: inherit;
-            font-weight: 600;
-            font-size: 0.9rem;
+            justify-content: center;
+            font-size: 40px;
         }
-        .arrow { margin-left: 5px; transition: transform 0.2s; }
-        .card:hover .arrow { transform: translateX(5px); }
-
-        /* 响应式 */
-        @media (max-width: 768px) {
-            .bento-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
-            .card-profile, .card-map, .card-social, .card-stack, .card-project, .card-status { grid-column: span 1; grid-row: auto; }
-            body { padding: 1rem; }
-            /* 手机端禁用3D效果以节省电量 */
-            .card { transform: none !important; } 
-            .card-content { transform: none !important; }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .crop-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background: #32CD32;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .crop-btn:hover {
+            background: #228B22;
+            transform: translateY(-2px);
+        }
+        
+        .crop-btn:disabled {
+            background: #CCCCCC;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            background: #4169E1;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover:not(:disabled) {
+            background: #1E90FF;
+            transform: translateY(-2px);
+        }
+        
+        .action-btn:disabled {
+            background: #CCCCCC;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .farmer-character {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 60px;
+        }
+        
+        .log {
+            background: #F5F5F5;
+            padding: 15px;
+            border-radius: 10px;
+            height: 100px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        
+        .log p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #E0E0E0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #32CD32;
+            transition: width 0.3s;
+        }
+        
+        @keyframes grow {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .growing {
+            animation: grow 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
-
-    <div class="bento-grid">
+    <div class="game-container">
+        <h1>🌾 田园小农夫 🌾</h1>
+        <p class="subtitle">种植三农产品，体验田园生活！</p>
         
-        <div class="card card-profile tilt-card">
-            <div class="card-glare"></div>
-            <div class="card-content">
-                < img src="https://api.dicebear.com/7.x/notionists/svg?seed=Alex" alt="Avatar" class="avatar">
-                <div>
-                    <p style="color: var(--accent); font-weight: bold; letter-spacing: 1px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 10px;">Hello World</p >
-                    <h1>我是 Hence.<br>某大学傻逼大学生。</h1>
-                </div>
+        <div class="farmer-character">
+            👨‍🌾
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div>💰 金币</div>
+                <div id="money" class="stat-value">100</div>
+            </div>
+            <div class="stat-item">
+                <div>🌱 种子</div>
+                <div id="seeds" class="stat-value">10</div>
+            </div>
+            <div class="stat-item">
+                <div>⏰ 时间</div>
+                <div id="time" class="stat-value">0</div>
             </div>
         </div>
-
-        <div class="card card-map tilt-card">
-            <div class="card-glare"></div>
-            <div class="card-content">
-                <h2 id="clock">00:00</h2>
-                <p>Shanghai, CN</p >
-                <div style="margin-top:auto; width: 100%; height: 40px; background: rgba(255,255,255,0.1); border-radius: 12px; position: relative;">
-                    <div style="position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 0 4px rgba(204, 255, 0, 0.3);"></div>
-                </div>
-            </div>
+        
+        <div class="controls">
+            <button class="crop-btn" onclick="selectCrop('rice')">🍚 水稻 (10金)</button>
+            <button class="crop-btn" onclick="selectCrop('wheat')">🌾 小麦 (15金)</button>
+            <button class="crop-btn" onclick="selectCrop('corn')">🌽 玉米 (20金)</button>
+            <button class="crop-btn" onclick="selectCrop('soybean')">🌱 大豆 (25金)</button>
         </div>
-
-        <a href=" " class="card card-social tilt-card">
-            <div class="card-glare"></div>
-            <div class="card-content">
-                <div style="display: flex; justify-content: space-between; width: 100%;">
-                    <h2>Let's<br>Connect</h2>
-                    <span style="font-size: 1.5rem;">↗</span>
-                </div>
-                <div style="margin-top: auto;">
-                    <p style="font-weight: 600;">Twitter / X</p >
-                    <p style="font-weight: 600;">Instagram</p >
-                </div>
-            </div>
-        </a >
-
-        <div class="card card-stack tilt-card">
-            <div class="card-glare"></div>
-            <div class="card-content">
-                <h2>Tech Stack</h2>
-                <div style="margin-top: 10px;">
-                    <span class="tag">React</span> <span class="tag">Next.js</span>
-                    <span class="tag">Three.js</span> <span class="tag">AI/LLM</span>
-                </div>
-            </div>
+        
+        <div class="farmland" id="farmland">
+            <!-- 农田格子将通过JavaScript生成 -->
         </div>
-
-        <div class="card card-status tilt-card">
-            <div class="card-glare"></div>
-            <div class="card-content">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="width: 10px; height: 10px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 10px #00ff88;"></span>
-                    <h2 style="font-size: 1rem; margin:0;">Available</h2>
-                </div>
-                <p style="margin-top: 5px;">Accepting Projects</p >
-            </div>
+        
+        <div class="actions">
+            <button class="action-btn" onclick="harvestAll()">收割全部</button>
+            <button class="action-btn" onclick="buySeeds()">购买种子</button>
+            <button class="action-btn" onclick="resetGame()">重新开始</button>
         </div>
-
-        <div class="card card-project tilt-card">
-            <div class="card-glare"></div>
-            <div class="card-content">
-                <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem;">Featured</p >
-                <h2 style="font-size: 2rem; margin-top: 10px;">Neon SaaS<br>Platform</h2>
-                <p style="margin-top: 10px; max-width: 80%;">极致的 3D 数据可视化体验。</p >
-                <div class="btn">View Case Study <span class="arrow">→</span></div>
-            </div>
-            <div style="position: absolute; bottom: -20px; right: -20px; width: 100px; height: 100px; border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; z-index: 1;"></div>
+        
+        <div class="log" id="log">
+            <p>欢迎来到田园小农夫！开始你的农业之旅吧！</p>
         </div>
-
     </div>
 
     <script>
-        // 1. 时钟逻辑
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('clock').textContent = 
-                `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        // 游戏状态
+        let gameState = {
+            money: 100,
+            seeds: 10,
+            time: 0,
+            selectedCrop: null,
+            plots: Array(16).fill(null), // 4x4农田
+            cropTypes: {
+                rice: { emoji: '🍚', price: 10, sellPrice: 15, growTime: 3 },
+                wheat: { emoji: '🌾', price: 15, sellPrice: 22, growTime: 5 },
+                corn: { emoji: '🌽', price: 20, sellPrice: 30, growTime: 7 },
+                soybean: { emoji: '🌱', price: 25, sellPrice: 35, growTime: 10 }
+            }
+        };
+
+        // 初始化游戏
+        function initGame() {
+            updateStats();
+            renderFarmland();
+            startGameLoop();
         }
-        setInterval(updateTime, 1000);
-        updateTime();
 
-        // 2. 3D 倾斜特效逻辑 (核心部分)
-        const cards = document.querySelectorAll('.tilt-card');
+        // 更新统计数据
+        function updateStats() {
+            document.getElementById('money').textContent = gameState.money;
+            document.getElementById('seeds').textContent = gameState.seeds;
+            document.getElementById('time').textContent = gameState.time;
+            
+            // 更新作物按钮状态
+            for (let crop in gameState.cropTypes) {
+                const btn = document.querySelector(`[onclick="selectCrop('${crop}')"]`);
+                if (btn) {
+                    btn.disabled = gameState.money < gameState.cropTypes[crop].price;
+                }
+            }
+        }
 
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+        // 渲染农田
+        function renderFarmland() {
+            const farmland = document.getElementById('farmland');
+            farmland.innerHTML = '';
+            
+            for (let i = 0; i < 16; i++) {
+                const plot = document.createElement('div');
+                plot.className = 'plot';
+                plot.dataset.index = i;
                 
-                // 计算鼠标相对于卡片中心的百分比 (-1 到 1)
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
+                if (gameState.plots[i]) {
+                    plot.classList.add('occupied');
+                    const cropInfo = gameState.plots[i];
+                    const cropDiv = document.createElement('div');
+                    cropDiv.className = 'crop growing';
+                    
+                    if (cropInfo.stage === 'seed') {
+                        cropDiv.textContent = '🌱';
+                    } else if (cropInfo.stage === 'growing') {
+                        cropDiv.innerHTML = `
+                            <div>${gameState.cropTypes[cropInfo.type].emoji}</div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: ${(cropInfo.progress / cropInfo.totalTime) * 100}%"></div>
+                            </div>
+                        `;
+                    } else if (cropInfo.stage === 'ready') {
+                        cropDiv.textContent = gameState.cropTypes[cropInfo.type].emoji;
+                    }
+                    
+                    plot.appendChild(cropDiv);
+                }
                 
-                const rotateX = ((y - centerY) / centerY) * -10; // X轴旋转度数 (上下)
-                const rotateY = ((x - centerX) / centerX) * 10;  // Y轴旋转度数 (左右)
+                plot.addEventListener('click', () => plantCrop(i));
+                farmland.appendChild(plot);
+            }
+        }
 
-                // 设置光泽 (Glare) 的位置
-                const glare = card.querySelector('.card-glare');
-                glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 80%)`;
-                glare.style.opacity = 1;
+        // 选择作物
+        function selectCrop(cropType) {
+            if (gameState.money >= gameState.cropTypes[cropType].price) {
+                gameState.selectedCrop = cropType;
+                addLog(`选择了 ${getEmojiByCropType(cropType)} ${cropType}`);
+            }
+        }
 
-                // 应用 3D 变换
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            });
+        // 种植作物
+        function plantCrop(index) {
+            if (!gameState.selectedCrop) {
+                addLog('请先选择要种植的作物！');
+                return;
+            }
+            
+            if (gameState.plots[index] !== null) {
+                addLog('这块地已经有作物了！');
+                return;
+            }
+            
+            if (gameState.seeds <= 0) {
+                addLog('种子不足！');
+                return;
+            }
+            
+            const cropType = gameState.selectedCrop;
+            if (gameState.money < gameState.cropTypes[cropType].price) {
+                addLog('金币不足！');
+                return;
+            }
+            
+            // 花费金币购买种子
+            gameState.money -= gameState.cropTypes[cropType].price;
+            gameState.seeds--;
+            
+            // 种植作物
+            gameState.plots[index] = {
+                type: cropType,
+                stage: 'seed',
+                progress: 0,
+                totalTime: gameState.cropTypes[cropType].growTime
+            };
+            
+            addLog(`在第${index+1}块地种下了 ${gameState.cropTypes[cropType].emoji}`);
+            updateStats();
+            renderFarmland();
+        }
 
-            card.addEventListener('mouseleave', () => {
-                // 鼠标离开时复原
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-                const glare = card.querySelector('.card-glare');
-                glare.style.opacity = 0;
-            });
-        });
+        // 收获所有成熟作物
+        function harvestAll() {
+            let harvested = 0;
+            let earned = 0;
+            
+            for (let i = 0; i < gameState.plots.length; i++) {
+                if (gameState.plots[i] && gameState.plots[i].stage === 'ready') {
+                    const cropType = gameState.plots[i].type;
+                    const sellPrice = gameState.cropTypes[cropType].sellPrice;
+                    
+                    gameState.money += sellPrice;
+                    gameState.plots[i] = null;
+                    harvested++;
+                    earned += sellPrice;
+                }
+            }
+            
+            if (harvested > 0) {
+                addLog(`收获了 ${harvested} 个作物，获得 ${earned} 金币！`);
+                updateStats();
+                renderFarmland();
+            } else {
+                addLog('没有成熟的作物可以收获！');
+            }
+        }
+
+        // 购买种子
+        function buySeeds() {
+            if (gameState.money >= 5) {
+                gameState.money -= 5;
+                gameState.seeds += 1;
+                addLog('购买了1颗种子！');
+                updateStats();
+            } else {
+                addLog('金币不足，无法购买种子！');
+            }
+        }
+
+        // 重新开始游戏
+        function resetGame() {
+            if (confirm('确定要重新开始吗？')) {
+                gameState = {
+                    money: 100,
+                    seeds: 10,
+                    time: 0,
+                    selectedCrop: null,
+                    plots: Array(16).fill(null),
+                    cropTypes: gameState.cropTypes
+                };
+                
+                addLog('游戏已重新开始！');
+                updateStats();
+                renderFarmland();
+            }
+        }
+
+        // 游戏主循环
+        function gameLoop() {
+            gameState.time++;
+            
+            // 更新作物生长状态
+            for (let i = 0; i < gameState.plots.length; i++) {
+                if (gameState.plots[i] && gameState.plots[i].stage !== 'ready') {
+                    gameState.plots[i].progress++;
+                    
+                    if (gameState.plots[i].progress >= gameState.plots[i].totalTime) {
+                        gameState.plots[i].stage = 'ready';
+                        addLog(`第${i+1}块地的作物已成熟！`);
+                    } else if (gameState.plots[i].stage === 'seed') {
+                        gameState.plots[i].stage = 'growing';
+                    }
+                }
+            }
+            
+            updateStats();
+            renderFarmland();
+        }
+
+        // 开始游戏循环
+        function startGameLoop() {
+            setInterval(gameLoop, 2000); // 每2秒更新一次
+        }
+
+        // 添加日志
+        function addLog(message) {
+            const log = document.getElementById('log');
+            const p = document.createElement('p');
+            p.textContent = `[${formatTime(gameState.time)}] ${message}`;
+            log.appendChild(p);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // 格式化时间
+        function formatTime(time) {
+            const minutes = Math.floor(time / 30);
+            const seconds = time % 30;
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // 根据作物类型获取表情
+        function getEmojiByCropType(type) {
+            switch(type) {
+                case 'rice': return '🍚';
+                case 'wheat': return '🌾';
+                case 'corn': return '🌽';
+                case 'soybean': return '🌱';
+                default: return '🌱';
+            }
+        }
+
+        // 启动游戏
+        window.onload = initGame;
     </script>
 </body>
 </html>
