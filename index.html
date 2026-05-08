@@ -3,44 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>田园小农夫</title>
+    <title>小宇航员太空农场-音效修复版</title>
     <style>
         body {
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             font-family: 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(to bottom, #87CEEB, #98FB98);
-            color: #333;
+            background: linear-gradient(135deg, #2e8b57, #3cb371, #228b22);
+            color: #fff;
+            overflow-x: hidden;
         }
         
         .game-container {
-            max-width: 800px;
+            max-width: 100%;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            background: rgba(34, 139, 34, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            position: relative;
+            border: 2px solid #228b22;
         }
         
         h1 {
             text-align: center;
-            color: #2E8B57;
-            margin-bottom: 10px;
+            color: #98fb98;
+            margin-bottom: 5px;
+            font-size: 1.5em;
+            text-shadow: 0 0 10px rgba(152, 251, 152, 0.7);
         }
         
         .subtitle {
             text-align: center;
-            color: #666;
-            margin-bottom: 20px;
+            color: #90ee90;
+            margin-bottom: 15px;
+            font-size: 0.9em;
         }
         
         .stats {
             display: flex;
             justify-content: space-around;
-            background: #F0F8FF;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            background: rgba(46, 139, 87, 0.7);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #228b22;
         }
         
         .stat-item {
@@ -48,23 +55,23 @@
         }
         
         .stat-value {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
-            color: #2E8B57;
+            color: #98fb98;
         }
         
         .farmland {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 15px 0;
         }
         
         .plot {
-            height: 100px;
-            background: #DEB887;
-            border: 2px solid #8B4513;
-            border-radius: 8px;
+            height: 70px;
+            background: linear-gradient(to bottom, #556b2f, #6b8e23);
+            border: 2px solid #228b22;
+            border-radius: 6px;
             position: relative;
             cursor: pointer;
             transition: all 0.3s;
@@ -72,11 +79,12 @@
         
         .plot:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 6px rgba(152, 251, 152, 0.4);
+            border-color: #98fb98;
         }
         
         .plot.occupied {
-            background: #90EE90;
+            background: linear-gradient(to bottom, #6b8e23, #556b2f);
         }
         
         .crop {
@@ -85,35 +93,52 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
+            font-size: 30px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 15px;
+            background: #3d5229;
+            border-radius: 7px;
+            overflow: hidden;
+            margin-top: 3px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #98fb98;
+            transition: width 0.3s;
         }
         
         .controls {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 15px 0;
             flex-wrap: wrap;
         }
         
         .crop-btn {
-            padding: 12px 20px;
+            padding: 10px 15px;
             border: none;
-            border-radius: 25px;
-            background: #32CD32;
+            border-radius: 20px;
+            background: linear-gradient(to bottom, #6b8e23, #556b2f);
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
+            border: 1px solid #228b22;
         }
         
         .crop-btn:hover {
-            background: #228B22;
+            background: linear-gradient(to bottom, #7da93a, #6b8e23);
             transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(152, 251, 152, 0.4);
         }
         
         .crop-btn:disabled {
-            background: #CCCCCC;
+            background: #555;
             cursor: not-allowed;
             transform: none;
         }
@@ -121,66 +146,54 @@
         .actions {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 15px 0;
         }
         
         .action-btn {
-            padding: 12px 25px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 25px;
-            background: #4169E1;
+            border-radius: 20px;
+            background: linear-gradient(to bottom, #6b8e23, #556b2f);
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
+            border: 1px solid #228b22;
         }
         
         .action-btn:hover:not(:disabled) {
-            background: #1E90FF;
+            background: linear-gradient(to bottom, #7da93a, #6b8e23);
             transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(152, 251, 152, 0.4);
         }
         
         .action-btn:disabled {
-            background: #CCCCCC;
+            background: #555;
             cursor: not-allowed;
             transform: none;
         }
         
-        .farmer-character {
+        .astronaut-character {
             text-align: center;
-            margin: 20px 0;
-            font-size: 60px;
+            margin: 15px 0;
+            font-size: 50px;
         }
         
         .log {
-            background: #F5F5F5;
-            padding: 15px;
-            border-radius: 10px;
-            height: 100px;
+            background: rgba(46, 139, 87, 0.7);
+            padding: 12px;
+            border-radius: 8px;
+            height: 80px;
             overflow-y: auto;
-            margin-top: 20px;
+            margin-top: 15px;
+            border: 1px solid #228b22;
         }
         
         .log p {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #E0E0E0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 5px;
-        }
-        
-        .progress {
-            height: 100%;
-            background: #32CD32;
-            transition: width 0.3s;
+            margin: 4px 0;
+            font-size: 13px;
+            color: #90ee90;
         }
         
         @keyframes grow {
@@ -191,25 +204,234 @@
         .growing {
             animation: grow 0.5s ease-in-out;
         }
+        
+        .music-control {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 139, 34, 0.9);
+            padding: 6px 12px;
+            border-radius: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            border: 1px solid #228b22;
+        }
+        
+        .music-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            color: #98fb98;
+        }
+        
+        .music-btn:hover {
+            background: #3d5229;
+            transform: scale(1.1);
+        }
+        
+        .volume-slider {
+            width: 60px;
+        }
+        
+        .astronaut-section {
+            text-align: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: linear-gradient(to right, #6b8e23, #556b2f);
+            border-radius: 10px;
+            border: 1px solid #228b22;
+        }
+        
+        .astronaut-title {
+            font-size: 1.2em;
+            color: #98fb98;
+            margin-bottom: 10px;
+        }
+        
+        .astronaut-character-display {
+            font-size: 60px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .astronaut-stats {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .astronaut-stat {
+            background: rgba(46, 139, 87, 0.7);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            border: 1px solid #228b22;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .astronaut-actions {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .astronaut-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(to bottom, #556b2f, #4a5d23);
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #228b22;
+        }
+        
+        .astronaut-btn:hover {
+            background: linear-gradient(to bottom, #6b8e23, #556b2f);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(152, 251, 152, 0.4);
+        }
+        
+        .astronaut-log {
+            background: rgba(46, 139, 87, 0.7);
+            padding: 10px;
+            border-radius: 8px;
+            height: 60px;
+            overflow-y: auto;
+            margin-top: 10px;
+            font-size: 0.9em;
+            border: 1px solid #228b22;
+        }
+        
+        .astronaut-log p {
+            margin: 3px 0;
+            color: #90ee90;
+        }
+        
+        .astronaut-chat {
+            background: rgba(46, 139, 87, 0.7);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: left;
+            border: 1px solid #228b22;
+        }
+        
+        .astronaut-chat p {
+            margin: 8px 0;
+            line-height: 1.4;
+            color: #90ee90;
+        }
+        
+        .astronaut-speech {
+            display: inline-block;
+            background: rgba(34, 139, 34, 0.9);
+            padding: 8px 12px;
+            border-radius: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            border: 1px solid #228b22;
+        }
+        
+        .astronaut-emotion {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+        
+        /* 装饰元素 */
+        .farm-decoration {
+            position: absolute;
+            z-index: -1;
+        }
+        
+        .leaf {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.3;
+            animation:飘动 15s linear infinite;
+        }
+        
+        .leaf:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .leaf:nth-child(2) { top: 20%; right: 10%; animation-delay: 3s; }
+        .leaf:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 6s; }
+        .leaf:nth-child(4) { bottom: 25%; right: 20%; animation-delay: 9s; }
+        .leaf:nth-child(5) { top: 30%; left: 25%; animation-delay: 12s; }
+        
+        @keyframes 飘动 {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, 20px) rotate(10deg); }
+            50% { transform: translate(0, 40px) rotate(0deg); }
+            75% { transform: translate(-20px, 20px) rotate(-10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
     </style>
 </head>
 <body>
     <div class="game-container">
-        <h1>🌾 田园小农夫 🌾</h1>
-        <p class="subtitle">种植三农产品，体验田园生活！</p>
+        <div class="farm-decoration">
+            <div class="leaf">🌿</div>
+            <div class="leaf">🍃</div>
+            <div class="leaf">🌱</div>
+            <div class="leaf">🍀</div>
+            <div class="leaf">🌺</div>
+        </div>
         
-        <div class="farmer-character">
-            👨‍🌾
+        <h1>🚀 小宇航员太空农场 🚀</h1>
+        <p class="subtitle">在太空中种植奇异作物，探索星际农业！</p>
+        
+        <div class="music-control">
+            <button class="music-btn" id="musicToggle">🔊</button>
+            <input type="range" min="0" max="100" value="50" class="volume-slider" id="volumeSlider">
+        </div>
+        
+        <div class="astronaut-section">
+            <div class="astronaut-title">👨‍🚀 小宇航员助手 👨‍🚀</div>
+            <div class="astronaut-character-display" id="astronautCharacter">👨‍🚀</div>
+            <div class="astronaut-stats">
+                <div class="astronaut-stat">🔋 能量: <span id="astronautEnergy">100</span></div>
+                <div class="astronaut-stat">⭐ 等级: <span id="astronautLevel">1</span></div>
+                <div class="astronaut-stat">🌟 经验: <span id="astronautExp">0</span></div>
+            </div>
+            <div class="astronaut-actions">
+                <button class="astronaut-btn" onclick="refuelAstronaut()">/fuel 补给</button>
+                <button class="astronaut-btn" onclick="repairAstronaut()">/repair 维修</button>
+                <button class="astronaut-btn" onclick="upgradeAstronaut()">/upgrade 升级</button>
+                <button class="astronaut-btn" onclick="exploreSpace()">/explore 探索</button>
+            </div>
+            <div class="astronaut-log" id="astronautLog">
+                <p>小宇航员: 哈喽！我是你的太空助手！</p>
+            </div>
+        </div>
+        
+        <div class="astronaut-chat" id="astronautChat">
+            <p><span class="astronaut-emotion">👨‍🚀</span><span class="astronaut-speech">大家好！我是小宇航员！今天我们在太空中种地吧！</span></p>
+        </div>
+        
+        <div class="astronaut-character">
+            👨‍🚀
         </div>
         
         <div class="stats">
             <div class="stat-item">
-                <div>💰 金币</div>
-                <div id="money" class="stat-value">100</div>
+                <div>💰 星币</div>
+                <div id="money" class="stat-value">888</div>
             </div>
             <div class="stat-item">
-                <div>🌱 种子</div>
-                <div id="seeds" class="stat-value">10</div>
+                <div>🌱 太空种子</div>
+                <div id="seeds" class="stat-value">88</div>
             </div>
             <div class="stat-item">
                 <div>⏰ 时间</div>
@@ -218,10 +440,10 @@
         </div>
         
         <div class="controls">
-            <button class="crop-btn" onclick="selectCrop('rice')">🍚 水稻 (10金)</button>
-            <button class="crop-btn" onclick="selectCrop('wheat')">🌾 小麦 (15金)</button>
-            <button class="crop-btn" onclick="selectCrop('corn')">🌽 玉米 (20金)</button>
-            <button class="crop-btn" onclick="selectCrop('soybean')">🌱 大豆 (25金)</button>
+            <button class="crop-btn" onclick="selectCrop('spaceRice')">🍚 太空大米 (10星币)</button>
+            <button class="crop-btn" onclick="selectCrop('marsWheat')">🌾 火星小麦 (15星币)</button>
+            <button class="crop-btn" onclick="selectCrop('jupiterCorn')">🌽 木星玉米 (20星币)</button>
+            <button class="crop-btn" onclick="selectCrop('neptuneSoy')">🌱 海王星大豆 (25星币)</button>
         </div>
         
         <div class="farmland" id="farmland">
@@ -229,37 +451,179 @@
         </div>
         
         <div class="actions">
-            <button class="action-btn" onclick="harvestAll()">收割全部</button>
+            <button class="action-btn" onclick="harvestAll()">收获全部</button>
             <button class="action-btn" onclick="buySeeds()">购买种子</button>
             <button class="action-btn" onclick="resetGame()">重新开始</button>
         </div>
         
         <div class="log" id="log">
-            <p>欢迎来到田园小农夫！开始你的农业之旅吧！</p>
+            <p>欢迎来到小宇航员太空农场！开始你的星际农业之旅吧！</p>
         </div>
     </div>
 
     <script>
         // 游戏状态
         let gameState = {
-            money: 100,
-            seeds: 10,
+            money: 888,  // 已将初始金币数量改为888
+            seeds: 88,   // 已将初始种子数量改为88
             time: 0,
             selectedCrop: null,
             plots: Array(16).fill(null), // 4x4农田
             cropTypes: {
-                rice: { emoji: '🍚', price: 10, sellPrice: 15, growTime: 3 },
-                wheat: { emoji: '🌾', price: 15, sellPrice: 22, growTime: 5 },
-                corn: { emoji: '🌽', price: 20, sellPrice: 30, growTime: 7 },
-                soybean: { emoji: '🌱', price: 25, sellPrice: 35, growTime: 10 }
+                spaceRice: { emoji: '🍚', price: 10, sellPrice: 15, growTime: 3 },
+                marsWheat: { emoji: '🌾', price: 15, sellPrice: 22, growTime: 5 },
+                jupiterCorn: { emoji: '🌽', price: 20, sellPrice: 30, growTime: 7 },
+                neptuneSoy: { emoji: '🌱', price: 25, sellPrice: 35, growTime: 10 }
             }
         };
 
+        // 小宇航员状态
+        let astronautState = {
+            energy: 100,
+            level: 1,
+            exp: 0,
+            oxygen: 100,
+            lastInteraction: Date.now()
+        };
+
+        // 小宇航员对话记录
+        let astronautChatHistory = [
+            "大家好！我是小宇航员！今天我们在太空中种地吧！",
+            "记得要按时灌溉哦！在太空中植物也需要水分！",
+            "种地要细心，才能在太空中有好收成！"
+        ];
+
+        // 创建音频对象
+        let clickAudio, plantAudio, harvestAudio, astronautAudio;
+
+        // 初始化音频
+        function initAudio() {
+            try {
+                // 创建简单的音效 - 使用Web Audio API
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // 点击音效
+                clickAudio = function() {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.value = 520;
+                    gainNode.gain.value = 0.1;
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                };
+                
+                // 种植音效
+                plantAudio = function() {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.type = 'square';
+                    oscillator.frequency.value = 440;
+                    gainNode.gain.value = 0.1;
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                };
+                
+                // 收获音效
+                harvestAudio = function() {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.type = 'triangle';
+                    oscillator.frequency.value = 660;
+                    gainNode.gain.value = 0.1;
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                };
+                
+                // 小宇航员音效
+                astronautAudio = function() {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.type = 'sawtooth';
+                    oscillator.frequency.value = 330;
+                    gainNode.gain.value = 0.1;
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.15);
+                };
+            } catch (e) {
+                console.log("音频初始化失败:", e);
+                // 如果Web Audio不可用，使用空函数
+                clickAudio = plantAudio = harvestAudio = astronautAudio = function() {};
+            }
+        }
+
         // 初始化游戏
         function initGame() {
+            initAudio(); // 初始化音频
             updateStats();
             renderFarmland();
+            setupMusicControls();
+            updateAstronautDisplay();
             startGameLoop();
+        }
+
+        // 设置音乐控制
+        function setupMusicControls() {
+            const musicToggle = document.getElementById('musicToggle');
+            const volumeSlider = document.getElementById('volumeSlider');
+            
+            musicToggle.addEventListener('click', toggleMusic);
+            volumeSlider.addEventListener('input', changeVolume);
+        }
+
+        // 切换音乐开关
+        function toggleMusic() {
+            const musicBtn = document.getElementById('musicToggle');
+            
+            if (musicEnabled) {
+                musicEnabled = false;
+                musicBtn.textContent = '🔇';
+            } else {
+                musicEnabled = true;
+                musicBtn.textContent = '🔊';
+            }
+        }
+
+        // 改变音量
+        function changeVolume() {
+            const slider = document.getElementById('volumeSlider');
+            musicVolume = slider.value / 100;
+        }
+
+        // 播放点击音效
+        function playClickSound() {
+            if (clickAudio) clickAudio();
+        }
+
+        // 播放种植音效
+        function playPlantSound() {
+            if (plantAudio) plantAudio();
+        }
+
+        // 播放收获音效
+        function playHarvestSound() {
+            if (harvestAudio) harvestAudio();
+        }
+
+        // 播放小宇航员音效
+        function playAstronautSound() {
+            if (astronautAudio) astronautAudio();
         }
 
         // 更新统计数据
@@ -275,6 +639,57 @@
                     btn.disabled = gameState.money < gameState.cropTypes[crop].price;
                 }
             }
+        }
+
+        // 更新小宇航员显示
+        function updateAstronautDisplay() {
+            document.getElementById('astronautEnergy').textContent = astronautState.energy;
+            document.getElementById('astronautLevel').textContent = astronautState.level;
+            document.getElementById('astronautExp').textContent = astronautState.exp;
+            
+            // 根据小宇航员状态改变表情
+            const astronautChar = document.getElementById('astronautCharacter');
+            if (astronautState.energy > 80) {
+                astronautChar.textContent = '👨‍🚀'; // 精力充沛
+            } else if (astronautState.energy > 50) {
+                astronautChar.textContent = '👨‍🚀'; // 正常
+            } else {
+                astronautChar.textContent = '👨‍🚀'; // 疲劳
+            }
+        }
+
+        // 添加日志
+        function addLog(message) {
+            const log = document.getElementById('log');
+            const p = document.createElement('p');
+            p.textContent = `[${formatTime(gameState.time)}] ${message}`;
+            log.appendChild(p);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // 添加小宇航员日志
+        function addAstronautLog(message) {
+            const log = document.getElementById('astronautLog');
+            const p = document.createElement('p');
+            p.textContent = `小宇航员: ${message}`;
+            log.appendChild(p);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // 添加小宇航员对话
+        function addAstronautChat(message) {
+            const chat = document.getElementById('astronautChat');
+            const p = document.createElement('p');
+            p.innerHTML = `<span class="astronaut-emotion">👨‍🚀</span><span class="astronaut-speech">${message}</span>`;
+            chat.appendChild(p);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        // 格式化时间
+        function formatTime(time) {
+            const minutes = Math.floor(time / 30);
+            const seconds = time % 30;
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
         // 渲染农田
@@ -309,16 +724,31 @@
                     plot.appendChild(cropDiv);
                 }
                 
-                plot.addEventListener('click', () => plantCrop(i));
+                plot.addEventListener('click', () => {
+                    playClickSound();
+                    plantCrop(i);
+                });
                 farmland.appendChild(plot);
             }
         }
 
         // 选择作物
         function selectCrop(cropType) {
+            playClickSound();
             if (gameState.money >= gameState.cropTypes[cropType].price) {
                 gameState.selectedCrop = cropType;
                 addLog(`选择了 ${getEmojiByCropType(cropType)} ${cropType}`);
+                
+                // 小宇航员反应
+                if (Math.random() > 0.7) {
+                    const reactions = [
+                        "这个作物看起来不错哦！",
+                        "种这个一定很赚钱！",
+                        "我最喜欢这个了！",
+                        "记得要细心照顾哦！"
+                    ];
+                    addAstronautLog(reactions[Math.floor(Math.random() * reactions.length)]);
+                }
             }
         }
 
@@ -341,11 +771,11 @@
             
             const cropType = gameState.selectedCrop;
             if (gameState.money < gameState.cropTypes[cropType].price) {
-                addLog('金币不足！');
+                addLog('星币不足！');
                 return;
             }
             
-            // 花费金币购买种子
+            // 花费星币购买种子
             gameState.money -= gameState.cropTypes[cropType].price;
             gameState.seeds--;
             
@@ -357,13 +787,29 @@
                 totalTime: gameState.cropTypes[cropType].growTime
             };
             
+            playPlantSound();
             addLog(`在第${index+1}块地种下了 ${gameState.cropTypes[cropType].emoji}`);
+            
+            // 小宇航员互动 - 种植时小宇航员会鼓励
+            if (Math.random() > 0.7) {
+                const encouragement = [
+                    "加油！我看好你哦！",
+                    "种得很好！继续努力！",
+                    "这片土地很有潜力！",
+                    "期待丰收的那一天！"
+                ];
+                addAstronautLog(encouragement[Math.floor(Math.random() * encouragement.length)]);
+                astronautState.energy = Math.min(100, astronautState.energy + 5);
+                updateAstronautDisplay();
+            }
+            
             updateStats();
             renderFarmland();
         }
 
         // 收获所有成熟作物
         function harvestAll() {
+            playClickSound();
             let harvested = 0;
             let earned = 0;
             
@@ -380,41 +826,155 @@
             }
             
             if (harvested > 0) {
-                addLog(`收获了 ${harvested} 个作物，获得 ${earned} 金币！`);
+                playHarvestSound();
+                addLog(`收获了 ${harvested} 个作物，获得 ${earned} 星币！`);
+                
+                // 小宇航员互动 - 收获时小宇航员会高兴
+                const reactions = [
+                    `哇！收获了${harvested}个作物！真棒！`,
+                    `太厉害了！这么多作物！`,
+                    `这就是丰收的感觉！`,
+                    `你的努力得到了回报！`
+                ];
+                addAstronautLog(reactions[Math.floor(Math.random() * reactions.length)]);
+                astronautState.energy = Math.min(100, astronautState.energy + 10);
+                astronautState.exp += harvested * 2;
+                checkAstronautLevelUp();
+                updateAstronautDisplay();
+                
                 updateStats();
                 renderFarmland();
             } else {
                 addLog('没有成熟的作物可以收获！');
+                addAstronautLog('现在还没有成熟的作物呢，耐心等待一下吧！');
             }
         }
 
         // 购买种子
         function buySeeds() {
+            playClickSound();
             if (gameState.money >= 5) {
                 gameState.money -= 5;
                 gameState.seeds += 1;
-                addLog('购买了1颗种子！');
-                updateStats();
+                addLog('购买了1颗太空种子！');
+                
+                // 小宇航员互动 - 购买种子时小宇航员会提醒
+                if (Math.random() > 0.5) {
+                    const tips = [
+                        '记得及时播种哦！',
+                        '有了种子就要好好利用！',
+                        '播种是丰收的第一步！'
+                    ];
+                    addAstronautLog(tips[Math.floor(Math.random() * tips.length)]);
+                }
             } else {
-                addLog('金币不足，无法购买种子！');
+                addLog('星币不足，无法购买种子！');
+                addAstronautLog('星币不够啦，赚点钱再来买种子吧！');
             }
         }
 
         // 重新开始游戏
         function resetGame() {
+            playClickSound();
             if (confirm('确定要重新开始吗？')) {
                 gameState = {
-                    money: 100,
-                    seeds: 10,
+                    money: 888,  // 重置时也保持888个星币
+                    seeds: 88,   // 重置时也保持88个种子
                     time: 0,
                     selectedCrop: null,
                     plots: Array(16).fill(null),
                     cropTypes: gameState.cropTypes
                 };
                 
+                // 保留小宇航员状态
+                astronautState.energy = 100;
+                astronautState.level = 1;
+                astronautState.exp = 0;
+                astronautState.oxygen = 100;
+                
                 addLog('游戏已重新开始！');
+                addAstronautLog('让我们重新开始吧！');
+                addAstronautChat('重新开始了，我们一起努力！');
                 updateStats();
+                updateAstronautDisplay();
                 renderFarmland();
+            }
+        }
+
+        // 小宇航员功能
+        function refuelAstronaut() {
+            playAstronautSound();
+            if (gameState.money >= 10) {
+                gameState.money -= 10;
+                astronautState.energy = Math.min(100, astronautState.energy + 15);
+                astronautState.oxygen = Math.min(100, astronautState.oxygen + 10);
+                addLog('花费10星币为小宇航员补给了能量！');
+                addAstronautLog('谢谢你的补给！我感觉好多了！');
+                addAstronautChat('有了能量，我可以更好地帮你工作！');
+                updateStats();
+                updateAstronautDisplay();
+            } else {
+                addAstronautLog('星币不够啦，赚点钱再来补给吧~');
+            }
+        }
+
+        function repairAstronaut() {
+            playAstronautSound();
+            if (gameState.money >= 20) {
+                gameState.money -= 20;
+                astronautState.energy = 100;
+                addLog('花费20星币维修了小宇航员！');
+                addAstronautLog('谢谢你维修我，我现在满能量了！');
+                addAstronautChat('维修后感觉又充满活力了！');
+                updateStats();
+                updateAstronautDisplay();
+            } else {
+                addAstronautLog('星币不够啦，赚点钱再来帮我维修吧~');
+            }
+        }
+
+        function upgradeAstronaut() {
+            playAstronautSound();
+            if (gameState.money >= 50) {
+                gameState.money -= 50;
+                astronautState.level++;
+                addLog('花费50星币升级了小宇航员！');
+                addAstronautLog('升级了！我现在更强大了！');
+                addAstronautChat('升级让我获得了新的能力！');
+                updateStats();
+                updateAstronautDisplay();
+            } else {
+                addAstronautLog('星币不够啦，赚点钱再来升级吧~');
+            }
+        }
+
+        function exploreSpace() {
+            playAstronautSound();
+            if (astronautState.energy >= 30) {
+                astronautState.energy -= 30;
+                // 小宇航员探索发现新资源
+                const foundResources = Math.floor(Math.random() * 20) + 10;
+                gameState.money += foundResources;
+                addLog(`小宇航员探索太空发现了${foundResources}星币！`);
+                addAstronautLog(`我在太空中发现了一些资源！`);
+                addAstronautChat(`太空中有很多宝藏，我们一起去探索吧！`);
+                updateStats();
+                updateAstronautDisplay();
+            } else {
+                addAstronautLog('我现在能量不足，需要休息一下才能去探索！');
+            }
+        }
+
+        // 检查小宇航员升级
+        function checkAstronautLevelUp() {
+            const expNeeded = astronautState.level * 50;
+            if (astronautState.exp >= expNeeded) {
+                astronautState.level++;
+                astronautState.exp -= expNeeded;
+                astronautState.energy = 100; // 升级回满能量
+                astronautState.oxygen = 100; // 升级回满氧气
+                addAstronautLog(`恭喜！我升到${astronautState.level}级了！`);
+                addAstronautChat(`升级啦！我变得更强大了！`);
             }
         }
 
@@ -430,14 +990,72 @@
                     if (gameState.plots[i].progress >= gameState.plots[i].totalTime) {
                         gameState.plots[i].stage = 'ready';
                         addLog(`第${i+1}块地的作物已成熟！`);
+                        
+                        // 小宇航员互动 - 作物成熟时小宇航员会提醒
+                        if (Math.random() > 0.8) {
+                            const reminders = [
+                                `快来看！第${i+1}块地的作物熟了！`,
+                                `第${i+1}块地的作物可以收获啦！`,
+                                `恭喜！第${i+1}块地的作物成熟了！`
+                            ];
+                            addAstronautLog(reminders[Math.floor(Math.random() * reminders.length)]);
+                        }
                     } else if (gameState.plots[i].stage === 'seed') {
                         gameState.plots[i].stage = 'growing';
                     }
                 }
             }
             
+            // 更新小宇航员状态
+            updateAstronautStats();
+            
             updateStats();
             renderFarmland();
+            
+            // 随机小宇航员对话
+            if (gameState.time % 20 === 0) { // 每20秒随机显示一句小宇航员对话
+                const randomChat = [
+                    "在太空中种地真的很有意思呢！",
+                    "我最喜欢和主人一起种地了！",
+                    "记得要好好照顾这些作物哦！",
+                    "勤劳的人一定会得到回报的！",
+                    "今天太空站的环境很适合作物生长！",
+                    "在失重环境下种植作物真是一种挑战！",
+                    "种地虽然辛苦，但很快乐！",
+                    "主人真棒！",
+                    "我们一起努力，争取大丰收！",
+                    "种地让我感到很有成就感！",
+                    "太空农业是未来的趋势！",
+                    "在太空中种植作物让我感到自豪！",
+                    "宇宙很大，我们要继续探索！",
+                    "星际农业是一项伟大的事业！",
+                    "太空农场将成为人类的新希望！"
+                ];
+                addAstronautChat(randomChat[Math.floor(Math.random() * randomChat.length)]);
+            }
+        }
+
+        // 更新小宇航员统计
+        function updateAstronautStats() {
+            // 每分钟减少小宇航员的能量和氧气
+            if (gameState.time % 30 === 0) { // 每30秒减少一次
+                astronautState.energy = Math.max(0, astronautState.energy - 1);
+                astronautState.oxygen = Math.max(0, astronautState.oxygen - 2);
+                
+                if (astronautState.energy <= 0 || astronautState.oxygen <= 0) {
+                    addAstronautLog('呜呜~我太虚弱了，需要你的补给！');
+                    addAstronautChat('我需要补给...给我一些能量...');
+                }
+                
+                updateAstronautDisplay();
+            }
+            
+            // 每分钟恢复少量能量
+            if (gameState.time % 60 === 0) {
+                astronautState.energy = Math.min(100, astronautState.energy + 10);
+                astronautState.oxygen = Math.min(100, astronautState.oxygen + 5);
+                updateAstronautDisplay();
+            }
         }
 
         // 开始游戏循环
@@ -445,35 +1063,23 @@
             setInterval(gameLoop, 2000); // 每2秒更新一次
         }
 
-        // 添加日志
-        function addLog(message) {
-            const log = document.getElementById('log');
-            const p = document.createElement('p');
-            p.textContent = `[${formatTime(gameState.time)}] ${message}`;
-            log.appendChild(p);
-            log.scrollTop = log.scrollHeight;
-        }
-
-        // 格式化时间
-        function formatTime(time) {
-            const minutes = Math.floor(time / 30);
-            const seconds = time % 30;
-            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
         // 根据作物类型获取表情
         function getEmojiByCropType(type) {
             switch(type) {
-                case 'rice': return '🍚';
-                case 'wheat': return '🌾';
-                case 'corn': return '🌽';
-                case 'soybean': return '🌱';
+                case 'spaceRice': return '🍚';
+                case 'marsWheat': return '🌾';
+                case 'jupiterCorn': return '🌽';
+                case 'neptuneSoy': return '🌱';
                 default: return '🌱';
             }
         }
 
         // 启动游戏
         window.onload = initGame;
+        
+        // 音频控制变量
+        let musicEnabled = true;
+        let musicVolume = 0.5;
     </script>
 </body>
 </html>
